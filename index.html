@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chef China</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+      (function () {
+        emailjs.init("YOUR_PUBLIC_KEY_HERE"); // Replace with your actual EmailJS Public Key
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="header-bar">
+      <div class="logo">Chef China</div>
+      <div class="tab-container">
+        <button class="tab-links active" onclick="showTab('menu', this)">
+          Menu
+        </button>
+        <button class="tab-links" onclick="window.open('', '_blank')">
+          Deliver Now
+        </button>
+        <button class="tab-links" onclick="showTab('catering', this)">
+          Catering
+        </button>
+        <button class="tab-links" onclick="showTab('hours', this)">
+          Hours
+        </button>
+        <button class="tab-links" onclick="showTab('about', this)">
+          About
+        </button>
+        <button class="tab-links" onclick="showTab('contact', this)">
+          Contact Us
+        </button>
+      </div>
+    </div>
+
+    <div id="menu" class="tab-content active">
+      <div class="menu-container">
+        <div class="menu-sidebar">
+          <ul id="categoryList">
+            <li class="category active" data-category="SaltNPepper">
+              Salt & Pepper
+            </li>
+            <li class="category" data-category="Beef">Beef</li>
+          </ul>
+        </div>
+        <div class="menu-grid" id="menuItemsGrid"></div>
+      </div>
+    </div>
+
+    <div id="catering" class="tab-content">
+      <div class="catering-layout">
+        <div class="catering-left">
+          <h1>Catering Menu</h1>
+          <div id="cateringMenu" class="catering-grid"></div>
+        </div>
+
+        <div class="catering-right">
+          <h2>Your Cart</h2>
+          <div id="cart"></div>
+          <p id="total">Total: $0</p>
+          <p id="subtotal">Subtotal (no tax): $0</p>
+          <button onclick="submitOrder()">Submit Order</button>
+          <button onclick="clearArray()">Clear Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="hours" class="tab-content">
+      <div class="hours-box">
+        <h2>Hours</h2>
+        <p>Monday: Closed</p>
+        <p>Tuesday - Saturday: 11:00am - 8:30pm</p>
+        <p>Sunday: 3:00pm - 8:30pm</p>
+      </div>
+    </div>
+
+    <div id="about" class="tab-content">
+      <div class="about-content">
+        <h2>About Us</h2>
+        <p>Family-owned since 1999...</p>
+      </div>
+    </div>
+
+    <div id="contact" class="tab-content">
+      <div class="contact-content">
+        <h2>Contact</h2>
+        <p>Phone: (619) 460-7286</p>
+        <p>ChefChina619@gmail.com</p>
+      </div>
+    </div>
+
+    <script src="order.js"></script>
+    <script src="form.js"></script>
+    <script>
+      function showTab(tabId, button) {
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((el) => el.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-links")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById(tabId).classList.add("active");
+        button.classList.add("active");
+        if (tabId === "catering" && typeof renderCateringMenu === "function") {
+          renderCateringMenu();
+        }
+      }
+
+      const menuItems = {
+        SaltNPepper: [
+          {
+            name: "Salt & Pepper Shrimp (Head on)",
+            image: "pictures/saltpeppershrimp.jpg",
+          },
+        ],
+        Beef: [{ name: "Mongolian Beef", image: "pictures/mongBeef.jpg" }],
+      };
+
+      function loadMenu(category) {
+        const grid = document.getElementById("menuItemsGrid");
+        grid.innerHTML = "";
+        menuItems[category].forEach((item) => {
+          const div = document.createElement("div");
+          div.classList.add("menu-item");
+          div.innerHTML = `<img src="${item.image}" alt="${item.name}" /><p>${item.name}</p>`;
+          grid.appendChild(div);
+        });
+      }
+
+      document.querySelectorAll(".category").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll(".category")
+            .forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          loadMenu(tab.dataset.category);
+        });
+      });
+
+      window.onload = () => {
+        loadMenu("SaltNPepper");
+      };
+    </script>
+  </body>
+</html>
