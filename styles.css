@@ -181,3 +181,39 @@ button {
 .catering-right button:hover {
   background-color: #a30000;
 }
+#orderForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#orderForm input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.form-buttons button {
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #d60000;
+  color: white;
+}
+
+.form-buttons button[type="button"] {
+  background-color: #d60000;
+  color: white;
+}

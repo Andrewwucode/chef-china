@@ -9,15 +9,13 @@
     <div class="header-bar">
       <div class="logo">Chef China</div>
       <div class="tab-container">
-        <button class="tab-links active" onclick="showTab('menu', this)">
-          Menu
+        <button class="tab-links active" onclick="showTab('catering', this)">
+          Catering
         </button>
         <button class="tab-links" onclick="window.open('', '_blank')">
           Deliver Now
         </button>
-        <button class="tab-links" onclick="showTab('catering', this)">
-          Catering
-        </button>
+        <button class="tab-links" onclick="showTab('menu', this)">Menu</button>
         <button class="tab-links" onclick="showTab('hours', this)">
           Hours
         </button>
@@ -30,8 +28,7 @@
       </div>
     </div>
 
-    <!-- CATERING SECTION -->
-    <div id="catering" class="tab-content" style="display: none">
+    <div id="catering" class="tab-content active">
       <div class="catering-layout">
         <div class="catering-left">
           <h1>Catering Menu</h1>
@@ -45,14 +42,25 @@
           <p id="tax">Tax (7.75%): $0</p>
           <p id="total">Total: $0</p>
 
-          <button onclick="submitOrder()">Submit Order</button>
-          <button onclick="clearArray()">Clear Cart</button>
+          <form id="orderForm" onsubmit="submitOrder(event)">
+            <input type="text" id="name" placeholder="Your Name" required />
+            <input type="email" id="email" placeholder="Your Email" required />
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Your Phone Number"
+              required
+            />
+            <div class="form-buttons">
+              <button type="submit">Submit Order</button>
+              <button type="button" onclick="clearArray()">Clear Cart</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
 
-    <!-- OPTIONAL SECTIONS BELOW IF YOU USE THEM -->
-    <div id="menu" class="tab-content">
+    <div id="menu" class="tab-content" style="display: none">
       <p>Menu content goes here...</p>
     </div>
 
@@ -74,7 +82,6 @@
       <p>Email: ChefChina619@gmail.com</p>
     </div>
 
-    <!-- Scripts -->
     <script src="form.js"></script>
     <script>
       function showTab(tabId, button) {
@@ -92,6 +99,12 @@
           renderCateringMenu();
         }
       }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        if (typeof renderCateringMenu === "function") {
+          renderCateringMenu();
+        }
+      });
     </script>
   </body>
 </html>
