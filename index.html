@@ -5,17 +5,19 @@
     <title>Chef China Catering</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body onload="showTab('menu', document.querySelector('[onclick*=\'menu\']'))">
     <div class="header-bar">
       <div class="logo">Chef China</div>
       <div class="tab-container">
-        <button class="tab-links active" onclick="showTab('catering', this)">
-          Catering
+        <button class="tab-links active" onclick="showTab('menu', this)">
+          Menu
         </button>
         <button class="tab-links" onclick="window.open('', '_blank')">
           Deliver Now
         </button>
-        <button class="tab-links" onclick="showTab('menu', this)">Menu</button>
+        <button class="tab-links" onclick="showTab('catering', this)">
+          Catering
+        </button>
         <button class="tab-links" onclick="showTab('hours', this)">
           Hours
         </button>
@@ -28,20 +30,18 @@
       </div>
     </div>
 
-    <div id="catering" class="tab-content active">
+    <div id="catering" class="tab-content">
       <div class="catering-layout">
         <div class="catering-left">
           <h1>Catering Menu</h1>
           <div id="cateringMenu" class="catering-grid"></div>
         </div>
-
         <div class="catering-right">
           <h2>Your Cart</h2>
           <div id="cart"></div>
           <p id="subtotal">Subtotal (no tax): $0</p>
           <p id="tax">Tax (7.75%): $0</p>
           <p id="total">Total: $0</p>
-
           <form id="orderForm" onsubmit="submitOrder(event)">
             <input type="text" id="name" placeholder="Your Name" required />
             <input type="email" id="email" placeholder="Your Email" required />
@@ -60,29 +60,89 @@
       </div>
     </div>
 
-    <div id="menu" class="tab-content" style="display: none">
-      <p>Menu content goes here...</p>
+    <div id="menu" class="tab-content">
+      <div class="menu-container">
+        <div class="menu-sidebar">
+          <ul id="categoryList">
+            <li class="category active" data-category="customer">
+              Customer's Favorites
+            </li>
+            <li class="category" data-category="SaltNPepper">Salt & Pepper</li>
+            <li class="category" data-category="Appetizers">Appetizers</li>
+            <li class="category" data-category="Soups">Soups</li>
+            <li class="category" data-category="Chicken">Chicken</li>
+            <li class="category" data-category="Shrimp">Shrimp</li>
+            <li class="category" data-category="Beef">Beef</li>
+            <li class="category" data-category="FriedRice">Fried Rice</li>
+            <li class="category" data-category="FamilyMeals">Family Meals</li>
+            <li class="category" data-category="ChowMein">Chow Mein</li>
+            <li class="category" data-category="LoMein">Lo Mein</li>
+            <li class="category" data-category="EggFooYoung">Egg Foo Young</li>
+            <li class="category" data-category="PanFriedNoodles">
+              Pan Fried Noodles
+            </li>
+            <li class="category" data-category="Combo">Combination Plates</li>
+          </ul>
+        </div>
+        <div class="menu-grid" id="menuItemsGrid"></div>
+      </div>
     </div>
 
     <div id="hours" class="tab-content" style="display: none">
-      <h2>Hours</h2>
-      <p>Monday: Closed</p>
-      <p>Tuesday - Saturday: 11:00am - 8:30pm</p>
-      <p>Sunday: 3:00pm - 8:30pm</p>
+      <section class="hours-section">
+        <h2>Hours of Operation</h2>
+        <ul class="hours-list">
+          <li><span>Monday:</span> Closed</li>
+          <li><span>Tuesday:</span> 11:00 AM – 8:30 PM</li>
+          <li><span>Wednesday:</span> 11:00 AM – 8:30 PM</li>
+          <li><span>Thursday:</span> 11:00 AM – 8:30 PM</li>
+          <li><span>Friday:</span> 11:00 AM – 8:30 PM</li>
+          <li><span>Saturday:</span> 11:00 AM – 8:30 PM</li>
+          <li><span>Sunday:</span> 3:00 PM – 8:30 PM</li>
+        </ul>
+      </section>
     </div>
 
     <div id="about" class="tab-content" style="display: none">
-      <h2>About Us</h2>
-      <p>Family-owned since 1999...</p>
+      <section class="about-section">
+        <h2>About Chef China</h2>
+        <p>
+          Chef China is a family-owned restaurant that has been serving the San
+          Diego community since 1999. Our mission is to provide authentic
+          Chinese cuisine made with fresh ingredients, generous portions, and a
+          warm, welcoming atmosphere.
+        </p>
+        <p>
+          Whether you're dining in or catering for a large party, we are
+          committed to delivering quality dishes that leave a lasting
+          impression. Thank you for supporting our small business!
+        </p>
+      </section>
     </div>
 
     <div id="contact" class="tab-content" style="display: none">
-      <h2>Contact Us</h2>
-      <p>Phone: (619) 460-7286</p>
-      <p>Email: ChefChina619@gmail.com</p>
+      <section class="contact-section">
+        <h2>Contact Us</h2>
+        <div class="contact-info">
+          <div class="contact-box">
+            <h3>Phone</h3>
+            <p>(619) 460-7286</p>
+          </div>
+          <div class="contact-box">
+            <h3>Email</h3>
+            <p>ChefChina619@gmail.com</p>
+          </div>
+        </div>
+        <p class="contact-note">
+          For catering inquiries or questions about your order, feel free to
+          reach out!
+        </p>
+      </section>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script src="form.js"></script>
+    <script src="menu.js"></script>
     <script>
       function showTab(tabId, button) {
         document.querySelectorAll(".tab-content").forEach((tab) => {
@@ -99,12 +159,6 @@
           renderCateringMenu();
         }
       }
-
-      window.addEventListener("DOMContentLoaded", () => {
-        if (typeof renderCateringMenu === "function") {
-          renderCateringMenu();
-        }
-      });
     </script>
   </body>
 </html>

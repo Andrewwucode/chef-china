@@ -1,3 +1,7 @@
+(function () {
+  emailjs.init("6zoE2JLkcOyRD4MEt");
+})();
+
 const cart = [];
 const TAX_RATE = 0.0775;
 
@@ -585,7 +589,7 @@ const cateringData = [
         fullPrice: 57,
       },
     ],
-    category: "Salt and Peper",
+    category: "Salt and Pepper",
     items: [
       {
         id: "saltWings",
@@ -762,7 +766,7 @@ function renderCart() {
 
   let subtotal = 0;
 
-  cart.forEach((item) => {
+  cart.forEach((item, index) => {
     const itemTotal = item.price * item.qty;
     subtotal += itemTotal;
 
@@ -790,6 +794,40 @@ function clearArray() {
   renderCart();
 }
 
-function submitOrder() {
-  alert("Order submitted!");
+function submitOrder(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const message = cart
+    .map(
+      (item) =>
+        `${item.name} (${item.size}) - $${item.price} × ${item.qty} = $${(
+          item.price * item.qty
+        ).toFixed(2)}`
+    )
+    .join("\n");
+
+  const templateParams = {
+    user_name: name,
+    user_email: email,
+    user_phone: phone,
+    order_summary: message,
+    total_price: document.getElementById("total").innerText,
+  };
+
+  emailjs.send("service_ld1qzwr", "template_kehfb7l", templateParams).then(
+    (response) => {
+      alert(
+        "Thank you for ordering with us! Someone will give you a call soon to confirm the order!"
+      );
+      clearArray();
+      document.getElementById("orderForm").reset();
+    },
+    (error) => {
+      alert("Failed to send order. Please try again.");
+      console.error("EmailJS error:", error);
+    }
+  );
 }
